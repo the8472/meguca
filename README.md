@@ -70,7 +70,7 @@ A reference list of commands can be found in `docs/installation.md`
 * [Go](https://golang.org/doc/install) >=1.7
 * [Node.js](https://nodejs.org) >=5.0
 * [Rust](https://www.rust-lang.org/en-US/install.html)
-* GCC or Clang
+* clang and LLVM >= 3.9
 * make
 * pkg-config
 * pthread

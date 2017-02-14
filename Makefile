@@ -95,6 +95,7 @@ dist_clean: clean
 	rm -rf images error.log
 
 test:
+	$(MAKE) -C imager/lib test
 	go test -p 1 ./...
 
 upgrade_v4: generate
