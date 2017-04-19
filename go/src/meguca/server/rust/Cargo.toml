@@ -7,5 +7,7 @@ authors = ["bakape <scorpid33@gmail.com>"]
 crate-type = ["staticlib"]
 
 [dependencies]
-ws = "0.7.1"
+websocket = "0.19.1"
 libc = "0.2.21"
+futures = "0.1"
+tokio-core = "0.1"

@@ -2,6 +2,7 @@ package server
 
 //#cgo CFLAGS: -I${SRCDIR}/rust
 //#cgo LDFLAGS: -L${SRCDIR}/rust -lwebsockets -ldl
+//#include <stdlib.h>
 //#include "websockets.h"
 import "C"
 import (
@@ -11,6 +12,8 @@ import (
 	"meguca/imager"
 	"meguca/util"
 	"net/http"
+
+	"unsafe"
 
 	"github.com/dimfeld/httptreemux"
 	"github.com/gorilla/handlers"
@@ -47,7 +50,9 @@ func startWebServer() (err error) {
 	r := createRouter()
 	log.Println("listening on " + address)
 
-	C.start(C.CString(wsAddress))
+	cStr := C.CString(wsAddress)
+	C.start(cStr)
+	C.free(unsafe.Pointer(cStr))
 
 	if ssl {
 		err = http.ListenAndServeTLS(address, sslCert, sslKey, r)
