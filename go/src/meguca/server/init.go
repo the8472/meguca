@@ -48,6 +48,12 @@ func Start() {
 		":8000",
 		"address to listen on for incoming HTTP connections",
 	)
+	flag.StringVar(
+		&wsAddress,
+		"A",
+		"127.0.0.1:8001",
+		"address to listen on for the separate websocket server",
+	)
 	flag.Float64Var(&cache.Size, "c", 1<<7, "cache size in MB")
 	flag.StringVar(
 		&db.ConnArgs,

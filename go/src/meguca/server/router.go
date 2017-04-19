@@ -1,11 +1,14 @@
 package server
 
+//#cgo CFLAGS: -I${SRCDIR}/rust
+//#cgo LDFLAGS: -L${SRCDIR}/rust -lwebsockets -ldl
+//#include "websockets.h"
+import "C"
 import (
 	"compress/gzip"
 	"log"
 	"meguca/auth"
 	"meguca/imager"
-	"meguca/server/websockets"
 	"meguca/util"
 	"net/http"
 
@@ -16,6 +19,9 @@ import (
 var (
 	// Address is the listening address of the HTTP web server
 	address = ":8000"
+
+	// Separate address for the Rust WebSocket server
+	wsAddress = "127.0.0.1:8001"
 
 	// Defines if HTTPS should be used for listening for incoming connections.
 	// Requires sslCert and sslKey to be set.
@@ -40,6 +46,8 @@ var webRoot = "www"
 func startWebServer() (err error) {
 	r := createRouter()
 	log.Println("listening on " + address)
+
+	C.start(C.CString(wsAddress))
 
 	if ssl {
 		err = http.ListenAndServeTLS(address, sslCert, sslKey, r)
@@ -151,9 +159,6 @@ func createRouter() http.Handler {
 	r.GET("/assets/*path", serveAssets)
 	r.GET("/images/*path", serveImages)
 	r.GET("/worker.js", wrapHandler(serveWorker))
-
-	// Websocket API
-	r.GET("/socket", wrapHandler(websockets.Handler))
 
 	// File upload
 	r.POST("/upload", wrapHandler(imager.NewImageUpload))

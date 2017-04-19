@@ -1,0 +1,11 @@
+[package]
+name = "websockets"
+version = "0.1.0"
+authors = ["bakape <scorpid33@gmail.com>"]
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+ws = "0.7.1"
+libc = "0.2.21"

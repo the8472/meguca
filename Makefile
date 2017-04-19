@@ -50,6 +50,7 @@ generate:
 	rm -f go/src/meguca/common/*_easyjson.go
 	rm -f go/src/meguca/config/*_easyjson.go
 	go generate meguca/...
+	$(MAKE) -C go/src/meguca/server/rust
 
 server_deps:
 	go list -f '{{.Deps}}' meguca | tr "[" " " | tr "]" " " | xargs go get -v
@@ -65,6 +66,7 @@ client_clean:
 clean: client_clean
 	rm -rf .build .ffmpeg .package meguca-*.zip meguca-*.tar.xz meguca meguca.exe
 	$(MAKE) -C scripts/migration/3to4 clean
+	$(MAKE) -C go/src/meguca/server/rust clean
 ifeq ($(is_windows), true)
 	rm -rf /.meguca_build *.dll
 endif
